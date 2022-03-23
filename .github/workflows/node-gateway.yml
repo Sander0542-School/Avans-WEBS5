@@ -9,6 +9,7 @@ on:
 
 jobs:
   build:
+    name: Gateway (${{ matrix.node-version }})
 
     runs-on: ubuntu-latest
 
