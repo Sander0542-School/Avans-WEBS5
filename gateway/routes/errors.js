@@ -6,9 +6,14 @@ module.exports = [
   },
 
   function (err, req, res, next) {
+    const status = err.status || 500
+
     res.locals.message = err.message
     res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-    res.status(err.status || 500).json({ message: err.message })
+    res.status(status).json({
+      code: status,
+      message: err.message
+    })
   }
 ]
