@@ -18,7 +18,7 @@ module.exports = {
             reject(err)
           }
 
-          dbConnection = db.db(process.env.GATEWAY_DB_NAME ?? 'users')
+          dbConnection = db.db(process.env.GATEWAY_DB_NAME ?? 'gateway')
           console.log('Successfully connected to MongoDB.')
 
           resolve(dbConnection)
