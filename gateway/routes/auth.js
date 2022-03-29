@@ -38,9 +38,10 @@ router.post('/register', function (req, res, next) {
         user.save()
           .then(value => {
             res.json(tokenResponse(generateToken(value)))
-          }).catch(reason => {
-          next(createError(500, reason.message))
-        })
+          })
+          .catch(reason => {
+            next(createError(500, reason.message))
+          })
       }
     })
     .catch(reason => {
