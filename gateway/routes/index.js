@@ -7,7 +7,7 @@ function initialize (passport, roles) {
     res.json([])
   })
 
-  router.get('/owner', passport.authenticate('jwt', { session: false }), roles.can('owner'), (req, res) => {
+  router.get('/me', passport.authenticate('jwt', { session: false }), (req, res) => {
     res.json(req.user)
   })
 
