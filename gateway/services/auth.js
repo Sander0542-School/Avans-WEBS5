@@ -15,9 +15,10 @@ class Auth {
           } else {
             resolve(null)
           }
-        }).catch(reason => {
-        reject(reason)
-      })
+        })
+        .catch(reason => {
+          reject(reason)
+        })
     })
   }
 }
