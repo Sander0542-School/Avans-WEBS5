@@ -77,7 +77,7 @@ function generateToken (user) {
   }
   const options = {
     subject: user._id.toString(),
-    expiresIn: '1h',
+    expiresIn: '1h'
   }
   return jwt.sign(payload, options)
 }
