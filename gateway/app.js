@@ -8,6 +8,7 @@ const database = require('./services/database')
 const passport = require('./services/passport')
 
 const authRouter = require('./routes/auth')
+const cqrsRouter = require('./routes/cqrs')
 const indexRouter = require('./routes/index')
 
 const roles = new ConnectRoles()
@@ -30,6 +31,7 @@ app.use(passport.initialize())
 app.use(roles.middleware())
 
 app.use('/', indexRouter(passport, roles))
+app.use('/', cqrsRouter(passport))
 app.use('/', authRouter)
 
 app.use(Errors)
