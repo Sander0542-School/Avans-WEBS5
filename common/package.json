@@ -1,0 +1,10 @@
+{
+  "name": "avans-common",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "passport": "^0.5.2",
+    "passport-jwt": "^4.0.0"
+  }
+}
