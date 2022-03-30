@@ -12,7 +12,6 @@ const strategy = new JwtStrategy(options, (payload, done) => {
   const authService = new AuthService()
   authService.getExistingPayload(payload)
     .then(value => {
-      console.log(value)
       if (!value) return done(null, false)
       if (value) return done(null, value)
     })

@@ -1,4 +1,4 @@
-const passport = require('passport')
+const createError = require('http-errors')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
@@ -8,8 +8,8 @@ const options = {
 }
 
 function initialize (apiKey) {
+  const passport = require('passport')
   const strategy = new JwtStrategy(options, (payload, done) => {
-    console.log(payload)
     if (payload.token && payload.token === apiKey) {
       return done(null, { userId: payload.sub })
     }
@@ -19,7 +19,16 @@ function initialize (apiKey) {
 
   return [
     passport.initialize(),
-    passport.authenticate('jwt', { session: false })
+    function (req, res, next) {
+      passport.authenticate('jwt', { session: false }, function (error, user) {
+        if (error || !user) {
+          return next(createError(401))
+        }
+
+        req.user = user
+        return next()
+      })(req, res, next)
+    }
   ]
 }
 

@@ -1,7 +1,10 @@
 const cors = require('cors')
 const express = require('express')
 const logger = require('morgan')
-const { Auth } = require('avans-common')
+const {
+  Auth,
+  Errors
+} = require('avans-common')
 
 const indexRouter = require('./routes/index')
 
@@ -14,5 +17,7 @@ app.use(logger('dev'))
 app.use(Auth(process.env.CQRS_API_KEY))
 
 app.use('/', indexRouter)
+
+app.use(Errors)
 
 module.exports = app
