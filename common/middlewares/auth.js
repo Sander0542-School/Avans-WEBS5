@@ -1,4 +1,4 @@
-const createError = require('http-errors')
+const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
@@ -8,11 +8,10 @@ const options = {
 }
 
 function initialize (apiKey) {
-  const passport = require('common/middlewares/apikey')
-
   const strategy = new JwtStrategy(options, (payload, done) => {
+    console.log(payload)
     if (payload.token && payload.token === apiKey) {
-      return done(null, {})
+      return done(null, { userId: payload.sub })
     }
     return done(null, false)
   })
@@ -20,11 +19,7 @@ function initialize (apiKey) {
 
   return [
     passport.initialize(),
-    function (req, res, next) {
-      if (!req.isAuthenticated()) {
-        return next(createError(401))
-      }
-    }
+    passport.authenticate('jwt', { session: false })
   ]
 }
 
