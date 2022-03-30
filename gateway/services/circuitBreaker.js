@@ -16,7 +16,7 @@ function initialize (host, port, token) {
         url: `http://${host}:${port}/${uri}`,
         data: body,
         headers: {
-          'Authorization': `Bearer ${jwt.sign({ token }, { subject: userId })}`
+          Authorization: `Bearer ${jwt.sign({ token }, { subject: userId })}`
         }
       }).then(response => {
         resolve(response.data)
