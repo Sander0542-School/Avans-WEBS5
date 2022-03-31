@@ -7,19 +7,19 @@ module.exports = class Forwarder {
     this.passport = passport.authenticate('jwt', { session: false })
   }
 
-  _handler (forwardMethod, forwardPath) {
+  _handler (method, url, body) {
     return (req, res, next) => {
-      this.breaker.fire(forwardMethod, forwardPath, req.user.id, req.body)
+      this.breaker.fire(method || req.method, url || req.url, req.user.id, body || req.body)
         .then(value => res.json(value))
         .catch(reason => next(createError(500, reason.message)))
     }
   }
 
-  get (path, forwardMethod, forwardPath) {
-    this.router.get(path, this.passport, this._handler(forwardMethod, forwardPath))
+  get (path, forwardPath, forwardMethod, forwardBody) {
+    this.router.get(path, this.passport, this._handler(forwardMethod, forwardPath, forwardBody))
   }
 
-  post (path, forwardMethod, forwardPath) {
-    this.router.post(path, this.passport, this._handler(forwardMethod, forwardPath))
+  post (path, forwardPath, forwardMethod, forwardBody) {
+    this.router.post(path, this.passport, this._handler(forwardMethod, forwardPath, forwardBody))
   }
 }

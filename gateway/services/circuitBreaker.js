@@ -13,7 +13,7 @@ function initialize (host, port, token) {
     return new Promise((resolve, reject) => {
       axios({
         method: method,
-        url: `http://${host}:${port}/${uri}`,
+        url: `http://${host}:${port}${uri}`,
         data: body,
         headers: {
           Authorization: `Bearer ${jwt.sign({ token }, { subject: userId })}`

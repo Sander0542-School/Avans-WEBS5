@@ -7,7 +7,7 @@ function initialize (passport) {
   const breaker = CircuitBreaker(process.env.CQRS_HOST || 'localhost', process.env.CQRS_PORT || 3000, process.env.CQRS_API_KEY)
   const forwarder = new Forwarder(router, breaker, passport)
 
-  forwarder.get('/targets', 'get', '')
+  forwarder.get('/targets', '/')
 
   return router
 }
