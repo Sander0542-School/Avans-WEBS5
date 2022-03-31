@@ -1,5 +1,4 @@
 const CircuitBreaker = require('../services/circuitBreaker')
-const createError = require('http-errors')
 const express = require('express')
 const Forwarder = require('../services/forwarder')
 
