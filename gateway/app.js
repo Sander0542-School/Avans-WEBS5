@@ -2,7 +2,10 @@ const ConnectRoles = require('connect-roles')
 const cors = require('cors')
 const express = require('express')
 const logger = require('morgan')
-const { Errors } = require('avans-common')
+const {
+  Errors,
+  Prometheus
+} = require('avans-common')
 
 const database = require('./services/database')
 const passport = require('./services/passport')
@@ -29,6 +32,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(roles.middleware())
+app.use(Prometheus)
 
 app.use('/', indexRouter(passport, roles))
 app.use('/', cqrsRouter(passport))
