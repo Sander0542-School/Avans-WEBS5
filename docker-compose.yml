@@ -1,0 +1,135 @@
+version: "3.9"
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    environment:
+      GATEWAY_MONGO_URL: "mongodb://gatewaydata:27017/gateway"
+      JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
+      CQRS_API_KEY: YGWYP82xfFydatBb
+      TARGET_API_KEY: ggqpfZtSJHY4Vv8V
+      SUBMISSION_API_KEY: htNKcSc9BZHtYDgR
+    ports:
+      - "80:80"
+    depends_on:
+      - gatewaydata
+      - cqrs
+      - target
+      - submission
+
+  cqrs:
+    build:
+      context: .
+      dockerfile: cqrs/Dockerfile
+    environment:
+      CQRS_MONGO_URL: "mongodb://cqrsdata:27017/cqrs"
+      JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
+      CQRS_API_KEY: YGWYP82xfFydatBb
+    expose:
+      - 3000
+    depends_on:
+      - cqrsdata
+      - rabbitmq
+
+#  target:
+#    build:
+#      context: .
+#      dockerfile: target/Dockerfile
+#    environment:
+#      TARGET_MONGO_URL: "mongodb://targetdata:27017/target"
+#      JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
+#      TARGET_API_KEY: ggqpfZtSJHY4Vv8V
+#    expose:
+#      - 3000
+#    depends_on:
+#      - targetdata
+#      - rabbitmq
+
+  submission:
+    build:
+      context: .
+      dockerfile: submission/Dockerfile
+    environment:
+      SUBMISSION_MONGO_URL: "mongodb://submissiondata:27017/submission"
+      JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
+      SUBMISSION_API_KEY: htNKcSc9BZHtYDgR
+    expose:
+      - 3000
+    depends_on:
+      - submissiondata
+      - rabbitmq
+
+  gatewaydata:
+    image: mongo:latest
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - data_gateway:/data/db
+
+  cqrsdata:
+    image: mongo:latest
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - data_cqrs:/data/db
+
+#  targetdata:
+#    image: mongo:latest
+#    restart: always
+#    expose:
+#      - 27017
+#    volumes:
+#      - data_target:/data/db
+
+  submissiondata:
+    image: mongo:latest
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - data_submission:/data/db
+
+  rabbitmq:
+    image: rabbitmq:latest
+    restart: always
+    expose:
+      - 5672
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: always
+    expose:
+      - 9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    build: ./grafana
+    restart: always
+    expose:
+      - 3000
+    depends_on:
+      - prometheus
+
+  dbexporter:
+    image: bitnami/mongodb-exporter:latest
+    restart: always
+    environment:
+      MONGODB_URI: "mongodb://gatewaydata:27017"
+    expose:
+      - 9216
+    depends_on:
+      - gatewaydata
+
+volumes:
+  data_gateway:
+  data_cqrs:
+#  data_target:
+  data_submission:
+  rabbitmq:
