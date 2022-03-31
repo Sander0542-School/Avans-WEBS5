@@ -10,7 +10,7 @@ module.exports = class Forwarder {
   _handler (method, url, body) {
     return (req, res, next) => {
       this.breaker.fire(method || req.method, url || req.url, req.user.id, body || req.body)
-        .then(value => res.json(value))
+        .then(response => res.status(response.status).json(response.data))
         .catch(reason => next(createError(500, reason.message)))
     }
   }
