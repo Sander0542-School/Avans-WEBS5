@@ -1,6 +1,7 @@
 const ConnectRoles = require('connect-roles')
 const cors = require('cors')
 const express = require('express')
+const proxy = require('express-http-proxy')
 const logger = require('morgan')
 const {
   Errors,
@@ -33,6 +34,9 @@ app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(roles.middleware())
 app.use(Prometheus)
+
+app.use('/grafana', proxy('http://grafana:3000/'))
+app.use('/prometheus', proxy('http://prometheus:9090/'))
 
 app.use('/', indexRouter(passport, roles))
 app.use('/', cqrsRouter(passport))
