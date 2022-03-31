@@ -1,12 +1,16 @@
 FROM node:16-alpine
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
+WORKDIR /usr/src/common
+COPY common .
 
 RUN npm ci --only=production
 
-COPY . .
+WORKDIR /usr/src/app
+COPY gateway/package*.json ./
+
+RUN npm ci --only=production
+
+COPY gateway .
 
 EXPOSE 80
 CMD [ "npm", "start" ]

@@ -1,12 +1,16 @@
 FROM node:16-alpine
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
+WORKDIR /usr/src/common
+COPY common .
 
 RUN npm ci --only=production
 
-COPY . .
+WORKDIR /usr/src/app
+COPY cqrs/package*.json ./
 
-EXPOSE 3000
+RUN npm ci --only=production
+
+COPY cqrs .
+
+EXPOSE 80
 CMD [ "npm", "start" ]
