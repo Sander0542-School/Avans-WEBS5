@@ -34,7 +34,9 @@ app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(roles.middleware())
 
-app.use('/grafana', proxy('http://grafana:3000/'))
+app.use('/grafana', proxy('http://grafana:3000/', {
+  preserveHostHdr: true
+}))
 app.use('/prometheus', proxy('http://prometheus:9090/'))
 
 app.use(Prometheus)
