@@ -1,8 +1,12 @@
 const ConnectRoles = require('connect-roles')
 const cors = require('cors')
 const express = require('express')
+const proxy = require('express-http-proxy')
 const logger = require('morgan')
-const { Errors } = require('avans-common')
+const {
+  Errors,
+  Prometheus
+} = require('avans-common')
 
 const database = require('./services/database')
 const passport = require('./services/passport')
@@ -30,6 +34,12 @@ app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(roles.middleware())
 
+app.use('/grafana', proxy('http://grafana:3000/', {
+  preserveHostHdr: true
+}))
+app.use('/prometheus', proxy('http://prometheus:9090/'))
+
+app.use(Prometheus)
 app.use('/', indexRouter(passport, roles))
 app.use('/', cqrsRouter(passport))
 app.use('/', authRouter)
