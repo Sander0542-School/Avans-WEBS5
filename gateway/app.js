@@ -33,11 +33,11 @@ app.use(express.urlencoded({ extended: false }))
 app.use(logger('dev'))
 app.use(passport.initialize())
 app.use(roles.middleware())
-app.use(Prometheus)
 
 app.use('/grafana', proxy('http://grafana:3000/'))
 app.use('/prometheus', proxy('http://prometheus:9090/'))
 
+app.use(Prometheus)
 app.use('/', indexRouter(passport, roles))
 app.use('/', cqrsRouter(passport))
 app.use('/', authRouter)
