@@ -17,7 +17,7 @@ RabbitMQ()
             channel.bindQueue(queue.queue, exchange, 'request')
             channel.consume(queue.queue, async (message) => {
               console.log('Message received')
-              content = JSON.parse(message.content.toString())
+              const content = JSON.parse(message.content.toString())
               const tags = await imagga.tag(content.image)
               channel.publish(exchange, content.return, Buffer.from(JSON.stringify(tags)))
             })

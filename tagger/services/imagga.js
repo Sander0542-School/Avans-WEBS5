@@ -24,7 +24,7 @@ module.exports = class Imagga {
 
       const tagResponse = await axios.get(`https://api.imagga.com/v2/tags?image_upload_id=${uploadId}`, {
         headers: {
-          Authorization: `Basic ${this.apiKey}`,
+          Authorization: `Basic ${this.apiKey}`
         }
       })
 
