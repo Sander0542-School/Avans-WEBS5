@@ -61,6 +61,16 @@ services:
       - submissiondata
       - rabbitmq
 
+  tagger:
+    build:
+      context: .
+      dockerfile: tagger/Dockerfile
+    environment:
+      TAGGER_MONGO_URL: "mongodb://taggerdata:27017/tagger"
+    depends_on:
+      - taggerdata
+      - rabbitmq
+
   gatewaydata:
     image: mongo:latest
     restart: always
@@ -92,6 +102,14 @@ services:
       - 27017
     volumes:
       - data_submission:/data/db
+
+  taggerdata:
+    image: mongo:latest
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - data_tagger:/data/db
 
   rabbitmq:
     image: rabbitmq:latest
@@ -132,4 +150,5 @@ volumes:
   data_cqrs:
 #  data_target:
   data_submission:
+  data_tagger:
   rabbitmq:
