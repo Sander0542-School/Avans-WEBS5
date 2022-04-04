@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "amqplib": "^0.8.0",
     "express-prom-bundle": "^6.4.1",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
