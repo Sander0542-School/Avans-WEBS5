@@ -1,0 +1,28 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: 'Context'
+        uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+
+      - name: 'Namespace'
+        uses: okteto/namespace@latest
+        with:
+          name: ${{ secrets.OKTETO_NAMESPACE }}
+
+      - name: 'Deploy'
+        uses: okteto/pipeline@latest
+        with:
+          name: devops-2122-sanderjochems-tommydenreijer
