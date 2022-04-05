@@ -1,0 +1,39 @@
+name: 'Node CI: Common'
+
+on:
+  push:
+    paths:
+      - 'common/**'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Common (${{ matrix.node-version }})
+
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: common
+
+    strategy:
+      matrix:
+        node-version: [ 16.x ]
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: common/package-lock.json
+
+      - name: 'Install dependencies'
+        run: npm ci
+
+      - name: 'Run ESLint'
+        run: npm run lint
