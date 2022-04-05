@@ -9,13 +9,25 @@
 
 ![Workflow Node CI Gateway](https://github.com/avans-devops/devops-2122-sanderjochems_tommydenreijer/actions/workflows/node-gateway.yml/badge.svg?branch=main)
 
-### CQRS
+### Target
 
-![Workflow Node CI CQRS](https://github.com/avans-devops/devops-2122-sanderjochems_tommydenreijer/actions/workflows/node-cqrs.yml/badge.svg?branch=main)
+![Workflow Node CI Submission](https://github.com/avans-devops/devops-2122-sanderjochems_tommydenreijer/actions/workflows/node-target.yml/badge.svg?branch=main)
 
 ### Submission
 
 ![Workflow Node CI Submission](https://github.com/avans-devops/devops-2122-sanderjochems_tommydenreijer/actions/workflows/node-submission.yml/badge.svg?branch=main)
+
+### CQRS
+
+![Workflow Node CI CQRS](https://github.com/avans-devops/devops-2122-sanderjochems_tommydenreijer/actions/workflows/node-cqrs.yml/badge.svg?branch=main)
+
+### Mail
+
+![Workflow Node CI Submission](https://github.com/avans-devops/devops-2122-sanderjochems_tommydenreijer/actions/workflows/node-mail.yml/badge.svg?branch=main)
+
+### Tagger
+
+![Workflow Node CI Submission](https://github.com/avans-devops/devops-2122-sanderjochems_tommydenreijer/actions/workflows/node-tagger.yml/badge.svg?branch=main)
 
 ## About
 
