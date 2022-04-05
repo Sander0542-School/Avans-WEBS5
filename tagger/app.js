@@ -11,19 +11,22 @@ RabbitMQ()
   .then(connection => {
     connection.createChannel()
       .then(channel => {
-        const exchange = 'webs.tagger'
-        channel.assertExchange(exchange, 'direct')
-
-        channel.assertQueue('', {
-          exclusive: true
+        const queueName = 'webs.tagger'
+        channel.assertQueue(queueName, {
+          durable: true
         })
           .then(queue => {
-            channel.bindQueue(queue.queue, exchange, 'request')
             channel.consume(queue.queue, async (message) => {
               const content = JSON.parse(message.content.toString())
               const tags = await imagga.tag(content.image)
 
-              channel.publish(exchange, content.return, Buffer.from(JSON.stringify(tags)))
+              channel.assertQueue(`${queueName}.${content.sender}`, {
+                durable: true
+              }).then(returnQueue => {
+                channel.sendToQueue(returnQueue.queue, Buffer.from(JSON.stringify(tags)), {
+                  persistent: true
+                })
+              })
 
               const tag = new Tag({
                 hash: md5(content.image),
