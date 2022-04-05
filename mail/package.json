@@ -1,0 +1,23 @@
+{
+  "name": "mail",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.js",
+    "dev": "nodemon -r dotenv/config ./app.js dotenv_config_path=../.env",
+    "lint": "npx eslint ."
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.6.2",
+    "avans-common": "file:../common",
+    "dotenv": "^16.0.0",
+    "mongoose": "^6.2.10"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0"
+  }
+}
