@@ -1,6 +1,10 @@
 const { RabbitMQ } = require('avans-common')
+const database = require('./services/database')
+const md5 = require('md5')
 const Imagga = require('./services/imagga')
+const Tag = require('./models/tag')
 
+database.initialize()
 const imagga = new Imagga()
 
 RabbitMQ()
@@ -16,10 +20,16 @@ RabbitMQ()
           .then(queue => {
             channel.bindQueue(queue.queue, exchange, 'request')
             channel.consume(queue.queue, async (message) => {
-              console.log('Message received')
               const content = JSON.parse(message.content.toString())
               const tags = await imagga.tag(content.image)
+
               channel.publish(exchange, content.return, Buffer.from(JSON.stringify(tags)))
+
+              const tag = new Tag({
+                hash: md5(content.image),
+                tags: tags
+              })
+              tag.save()
             })
           })
       })
