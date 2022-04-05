@@ -152,6 +152,8 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/rules.yml:/etc/prometheus/rules.yml
+    depends_on:
+      - gateway
 
   alertmanager:
     image: prom/alertmanager:latest
