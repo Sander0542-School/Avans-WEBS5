@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: gateway/Dockerfile
     environment:
+      GATEWAY_PORT: 3000
       GATEWAY_MONGO_URL: "mongodb://gatewaydata:27017/gateway"
       JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
       CQRS_API_KEY: YGWYP82xfFydatBb
@@ -26,6 +27,7 @@ services:
       context: .
       dockerfile: cqrs/Dockerfile
     environment:
+      CQRS_PORT: 3000
       CQRS_MONGO_URL: "mongodb://cqrsdata:27017/cqrs"
       JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
       CQRS_API_KEY: YGWYP82xfFydatBb
@@ -40,6 +42,7 @@ services:
 #      context: .
 #      dockerfile: target/Dockerfile
 #    environment:
+#      TARGET_PORT: 3000
 #      TARGET_MONGO_URL: "mongodb://targetdata:27017/target"
 #      JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
 #      TARGET_API_KEY: ggqpfZtSJHY4Vv8V
@@ -54,6 +57,7 @@ services:
       context: .
       dockerfile: submission/Dockerfile
     environment:
+      SUBMISSION_PORT: 3000
       SUBMISSION_MONGO_URL: "mongodb://submissiondata:27017/submission"
       JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
       SUBMISSION_API_KEY: htNKcSc9BZHtYDgR
