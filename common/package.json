@@ -2,6 +2,9 @@
   "name": "avans-common",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "lint": "npx eslint ."
+  },
   "dependencies": {
     "amqplib": "^0.8.0",
     "express-prom-bundle": "^6.4.1",
@@ -10,5 +13,12 @@
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "prom-client": "^14.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0"
   }
 }
