@@ -9,23 +9,27 @@ RabbitMQ()
   .then(connection => {
     connection.createChannel()
       .then(channel => {
-        const exchange = 'webs.mail'
-        channel.assertExchange(exchange, 'direct')
-
-        channel.assertQueue('', {
-          exclusive: true
+        channel.assertQueue('webs.mail', {
+          durable: true
         })
           .then(queue => {
-            channel.bindQueue(queue.queue, exchange, 'send')
             channel.consume(queue.queue, async (message) => {
               const content = JSON.parse(message.content.toString())
               const success = await mailer(content.to, content.subject, content.message)
+
+              if (success) {
+                console.log(`Mail sent to ${content.to}`)
+              } else {
+                console.log(`Could not send mail to ${content.to}`)
+              }
 
               const mail = new Mail({
                 success: success,
                 ...content
               })
               mail.save()
+            }, {
+              noAck: true
             })
           })
       })
