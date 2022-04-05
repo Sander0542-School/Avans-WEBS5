@@ -1,0 +1,11 @@
+groups:
+- name: PrometheusTargetMissing
+  rules:
+  - alert: PrometheusTargetMissing
+    expr: up == 0
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: '{{ $labels.instance }} is down'
+      description: 'Service {{ $labels.instance }} is down'
