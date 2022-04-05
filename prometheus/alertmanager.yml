@@ -1,0 +1,33 @@
+global:
+  smtp_smarthost: 'smtp.sendgrid.net:587'
+  smtp_from: 'sanderjochems@hotmail.nl'
+  smtp_auth_username: 'apikey'
+  smtp_auth_password: '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'
+
+receivers:
+  - name: 'mail'
+    email_configs:
+      - to: 'sja.jochems@student.avans.nl'
+        headers:
+          subject: 'Prometheus Alert: {{ .Status }}'
+        html: |
+          Greetings,
+          <p>
+          You have the following firing alerts:
+          <ul>
+          {{ range .Alerts }}
+          <li>{{.Labels.alertname}} on {{.Labels.instance}}</li>
+          <li>Labels:</li>
+          <li>{{ range .Labels.SortedPairs }} - {{ .Name }} = {{ .Value }}</li>
+          <li>{{ end }}Annotations:</li>
+          <li>{{ range .Annotations.SortedPairs }} - {{ .Name }} = {{ .Value }}</li>
+          <li>{{ end }}---</li>
+          {{ end }}
+          </ul>
+          </p>
+
+route:
+  receiver: 'mail'
+  group_wait: '10s'
+  group_interval: '5m'
+  repeat_interval: '1h'

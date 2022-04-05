@@ -145,6 +145,15 @@ services:
       - 9090
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/rules.yml:/etc/prometheus/rules.yml
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    restart: always
+    expose:
+      - 9093
+    volumes:
+      - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   grafana:
     build: ./grafana
