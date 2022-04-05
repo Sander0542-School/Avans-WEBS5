@@ -154,6 +154,7 @@ services:
       - ./prometheus/rules.yml:/etc/prometheus/rules.yml
     depends_on:
       - gateway
+      - alertmanager
 
   alertmanager:
     image: prom/alertmanager:latest
