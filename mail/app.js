@@ -4,7 +4,6 @@ const Mail = require('./models/mail')
 const mailer = require('./services/mailer')
 
 database.initialize()
-const imagga = new Imagga()
 
 RabbitMQ()
   .then(connection => {
