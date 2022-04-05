@@ -12,5 +12,5 @@ RUN npm ci --only=production
 
 COPY submission .
 
-EXPOSE 80
+EXPOSE 3000
 CMD [ "npm", "start" ]
