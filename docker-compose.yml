@@ -71,6 +71,17 @@ services:
       - taggerdata
       - rabbitmq
 
+  mail:
+    build:
+      context: .
+      dockerfile: mail/Dockerfile
+    environment:
+      MAIL_MONGO_URL: "mongodb://maildata:27017/mail"
+      SENDGRID_API_KEY: "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"
+    depends_on:
+      - maildata
+      - rabbitmq
+
   gatewaydata:
     image: mongo:latest
     restart: always
@@ -110,6 +121,14 @@ services:
       - 27017
     volumes:
       - data_tagger:/data/db
+
+  maildata:
+    image: mongo:latest
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - data_mail:/data/db
 
   rabbitmq:
     image: rabbitmq:latest
@@ -151,4 +170,5 @@ volumes:
 #  data_target:
   data_submission:
   data_tagger:
+  data_mail:
   rabbitmq:
