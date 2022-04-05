@@ -2,7 +2,7 @@ const amqp = require('amqplib')
 
 module.exports = function (host, port) {
   host = host || process.env.RABBITMQ_HOST || 'rabbitmq'
-  port = parseInt(port || process.env.RABBITMQ_PORT || 5672)
+  port = port || parseInt(process.env.RABBITMQ_PORT || '5672')
 
   return new Promise((resolve, reject) => {
     amqp.connect({
