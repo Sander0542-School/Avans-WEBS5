@@ -1,4 +1,6 @@
 const cors = require('cors')
+const consumer = require('./services/consumer')
+const database = require('./services/database')
 const express = require('express')
 const logger = require('morgan')
 const {
@@ -6,6 +8,9 @@ const {
   Errors,
   Prometheus
 } = require('avans-common')
+
+database.initialize()
+consumer()
 
 const indexRouter = require('./routes/index')
 
