@@ -11,7 +11,7 @@ router.get('/targets', function (req, res, next) {
     page: page,
     limit: 10,
     customLabels: {
-      docs: 'targets',
+      docs: 'targets'
     }
   })
     .then(result => {
@@ -50,7 +50,7 @@ router.get('/targets/:id/submissions', function (req, res, next) {
           page: page,
           limit: 10,
           customLabels: {
-            docs: 'submissions',
+            docs: 'submissions'
           }
         })
       }

@@ -17,8 +17,8 @@ module.exports = function initialize () {
 
                   switch (action.action) {
                     case 'create':
-                      const target = await Target.create(action.data)
-                      console.log(`Target ${target._id} created`)
+                      await Target.create(action.data)
+                      console.log('Target created')
                       break
                     case 'delete':
                       await Target.delete(action.id)
@@ -43,8 +43,8 @@ module.exports = function initialize () {
 
                   switch (action.action) {
                     case 'create':
-                      const submission = await Submission.create(action.data)
-                      console.log(`Submission ${submission._id} created`)
+                      await Submission.create(action.data)
+                      console.log('Submission created')
                       break
                     case 'delete':
                       await Submission.delete(action.id)
