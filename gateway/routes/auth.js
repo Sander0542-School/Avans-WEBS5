@@ -43,8 +43,8 @@ router.post('/register', function (req, res, next) {
         res.json(tokenResponse(generateToken(user)))
       }
     })
-    .catch(reason => {
-      next(createError(500, reason.message))
+    .catch(error => {
+      next(createError(500, error.message))
     })
 })
 
@@ -66,8 +66,8 @@ router.post('/login', function (req, res, next) {
         next(createError(403, 'Invalid credentials'))
       }
     })
-    .catch(reason => {
-      next(createError(500, reason.message))
+    .catch(error => {
+      next(createError(500, error.message))
     })
 })
 

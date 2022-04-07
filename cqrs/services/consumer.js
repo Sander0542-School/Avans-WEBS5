@@ -60,7 +60,7 @@ module.exports = function initialize () {
             })
         })
     })
-    .catch(reason => {
-      console.error(reason)
+    .catch(error => {
+      console.error(error)
     })
 }
