@@ -35,13 +35,12 @@ router.post('/register', function (req, res, next) {
         next(createError(400, 'Email already taken'))
       } else {
         const user = new User(req.body)
-        user.save()
-          .then(value => {
-            res.json(tokenResponse(generateToken(value)))
-          })
-          .catch(reason => {
-            next(createError(500, reason.message))
-          })
+        return user.save()
+      }
+    })
+    .then(user => {
+      if (user) {
+        res.json(tokenResponse(generateToken(user)))
       }
     })
     .catch(reason => {
