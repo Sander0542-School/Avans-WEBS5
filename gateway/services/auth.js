@@ -5,12 +5,12 @@ class Auth {
     return new Promise((resolve, reject) => {
       User.findById(payload.sub)
         .exec()
-        .then(value => {
-          if (value) {
+        .then(user => {
+          if (user) {
             resolve({
-              id: value._id.toString(),
-              email: value.email,
-              isOwner: value.isOwner
+              id: user._id.toString(),
+              email: user.email,
+              isOwner: user.isOwner
             })
           } else {
             resolve(null)

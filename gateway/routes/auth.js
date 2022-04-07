@@ -30,12 +30,12 @@ router.post('/register', function (req, res, next) {
     email: req.body.email
   })
     .exec()
-    .then(value => {
-      if (value) {
+    .then(user => {
+      if (user) {
         next(createError(400, 'Email already taken'))
       } else {
-        const user = new User(req.body)
-        return user.save()
+        const newUser = new User(req.body)
+        return newUser.save()
       }
     })
     .then(user => {
@@ -59,9 +59,9 @@ router.post('/login', function (req, res, next) {
     password: req.body.password
   })
     .exec()
-    .then(value => {
-      if (value) {
-        res.json(tokenResponse(generateToken(value)))
+    .then(user => {
+      if (user) {
+        res.json(tokenResponse(generateToken(user)))
       } else {
         next(createError(403, 'Invalid credentials'))
       }
