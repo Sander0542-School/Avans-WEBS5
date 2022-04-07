@@ -1,10 +1,20 @@
 const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2')
 
-const targetSchema = new mongoose.Schema({
-  content: { type: String },
+const schema = new mongoose.Schema({
+  content: {
+    type: String,
+    required: true
+  },
   ratings: [{
-    userId: { type: String },
-    vote: { type: Boolean }
+    userId: {
+      type: String,
+      required: true
+    },
+    vote: {
+      type: Boolean,
+      required: true
+    }
   }],
   place: {
     type: String,
@@ -21,25 +31,9 @@ const targetSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true
-  },
-  submissions: [{
-    userId: {
-      type: String,
-      required: true
-    },
-    image: {
-      type: String,
-      required: true
-    },
-    tags: {
-      type: mongoose.Schema.Types.Map,
-      required: true
-    },
-    score: {
-      type: Number,
-      required: true
-    }
-  }]
+  }
 })
 
-module.exports = mongoose.model('Target', targetSchema)
+schema.plugin(mongoosePaginate)
+
+module.exports = mongoose.model('Target', schema)
