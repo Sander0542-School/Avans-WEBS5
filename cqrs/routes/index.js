@@ -17,8 +17,8 @@ router.get('/targets', function (req, res, next) {
     .then(result => {
       res.json(result)
     })
-    .catch(err => {
-      next(createError(500, err.message))
+    .catch(error => {
+      next(createError(500, error.message))
     })
 })
 
@@ -31,8 +31,8 @@ router.get('/targets/:id', function (req, res, next) {
         res.json(target)
       }
     })
-    .catch(err => {
-      next(createError(500, err.message))
+    .catch(error => {
+      next(createError(500, error.message))
     })
 })
 
@@ -58,8 +58,8 @@ router.get('/targets/:id/submissions', function (req, res, next) {
     .then(result => {
       res.json(result)
     })
-    .catch(err => {
-      next(createError(500, err.message))
+    .catch(error => {
+      next(createError(500, error.message))
     })
 })
 
@@ -79,8 +79,8 @@ router.get('/target/:id/submissions/:submissionId', function (req, res, next) {
         res.json(submission)
       }
     })
-    .catch(err => {
-      next(createError(500, err.message))
+    .catch(error => {
+      next(createError(500, error.message))
     })
 })
 
