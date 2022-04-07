@@ -22,11 +22,12 @@ RabbitMQ()
 
               channel.assertQueue(`${queueName}.${content.sender}`, {
                 durable: true
-              }).then(returnQueue => {
-                channel.sendToQueue(returnQueue.queue, Buffer.from(JSON.stringify(tags)), {
-                  persistent: true
-                })
               })
+                .then(returnQueue => {
+                  channel.sendToQueue(returnQueue.queue, Buffer.from(JSON.stringify(tags)), {
+                    persistent: true
+                  })
+                })
 
               const tag = new Tag({
                 hash: md5(content.image),
