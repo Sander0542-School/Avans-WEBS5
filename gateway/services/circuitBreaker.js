@@ -19,9 +19,11 @@ function initialize (host, port, token) {
           Authorization: `Bearer ${jwt.sign({ token }, { subject: userId })}`
         },
         validateStatus: false
-      }).then(response => {
-        resolve(response)
-      }).catch(reject)
+      })
+        .then(response => {
+          resolve(response)
+        })
+        .catch(reject)
     })
   }, options)
 }

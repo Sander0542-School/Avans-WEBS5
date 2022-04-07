@@ -11,12 +11,12 @@ const options = {
 const strategy = new JwtStrategy(options, (payload, done) => {
   const authService = new AuthService()
   authService.getExistingPayload(payload)
-    .then(value => {
-      if (!value) return done(null, false)
-      if (value) return done(null, value)
+    .then(user => {
+      if (!user) return done(null, false)
+      if (user) return done(null, user)
     })
-    .catch(e => {
-      return done(e, false)
+    .catch(error => {
+      return done(error, false)
     })
 })
 passport.use(strategy)

@@ -37,8 +37,4 @@ module.exports = class Imagga {
 
     return tags
   }
-
-  formUrlEncoded (x) {
-    return Object.keys(x).reduce((p, c) => p + `&${c}=${encodeURIComponent(x[c])}`, '')
-  }
 }
