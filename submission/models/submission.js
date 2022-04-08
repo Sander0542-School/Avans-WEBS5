@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const mongoosePaginate = require('mongoose-paginate-v2')
 
 const schema = new mongoose.Schema({
   userId: {
@@ -17,10 +16,9 @@ const schema = new mongoose.Schema({
   },
   tags: {
     type: mongoose.Schema.Types.Map,
-    required: true
+    required: true,
+    default: {}
   }
 })
-
-schema.plugin(mongoosePaginate)
 
 module.exports = mongoose.model('Submission', schema)

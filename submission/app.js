@@ -22,10 +22,9 @@ app.use(logger('dev'))
 app.use(Prometheus)
 app.use(Auth(process.env.SUBMISSION_API_KEY))
 
-app.use('/', indexRouter)
-
 RabbitMQ()
   .then(connection => {
+    app.use('/', indexRouter(connection))
     consumer(connection)
   })
 
