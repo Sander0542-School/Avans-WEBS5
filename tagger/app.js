@@ -40,7 +40,7 @@ RabbitMQ()
                   console.log('Tag saved')
                 })
                 .catch(error => {
-                  console.log(error)
+                  console.error(error)
                 })
             })
           })
