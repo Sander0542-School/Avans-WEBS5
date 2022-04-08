@@ -4,120 +4,145 @@ const router = express.Router()
 const Submission = require('../models/submission')
 const Target = require('../models/target')
 
-router.get('/targets', function (req, res, next) {
-  const page = req.query.page || 0
+router.get('/targets', async function (req, res, next) {
+  try {
+    const page = req.query.page || 0
+    const sort = req.query.sort ? `field ${req.query.sort}` : undefined
+    const query = req.query.place ? { place: req.query.place } : {}
 
-  Target.paginate({}, {
-    page: page,
-    limit: 10,
-    customLabels: {
-      docs: 'targets'
+    const targets = await Target.paginate(query, {
+      page: page,
+      sort: sort,
+      limit: 10,
+      customLabels: {
+        docs: 'targets'
+      }
+    })
+
+    res.json(targets)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
+})
+
+router.get('/targets/:id', async function (req, res, next) {
+  try {
+    const target = await Target.findById(req.params.id)
+
+    if (!target) {
+      next(createError(404, 'Target not found'))
+      return
     }
-  })
-    .then(result => {
-      res.json(result)
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+
+    res.json(target)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
 })
 
-router.get('/targets/:id', function (req, res, next) {
-  Target.findById(req.params.id)
-    .then(target => {
-      if (!target) {
-        next(createError(404, 'Target not found'))
-      } else {
-        res.json(target)
-      }
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+router.get('/targets/:id/image', async function (req, res, next) {
+  try {
+    const target = await Target.findById(req.params.id).select('image')
+
+    if (!target) {
+      next(createError(404, 'Target not found'))
+      return
+    }
+
+    res.send(target.image)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
 })
 
-router.get('/targets/:id/image', function (req, res, next) {
-  Target.findById(req.params.id)
-    .select('image')
-    .then(target => {
-      if (!target) {
-        next(createError(404, 'Target not found'))
-      } else {
-        res.send(target.image)
-      }
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+router.get('/targets/:id/ratings', async function (req, res, next) {
+  try {
+    const target = await Target.findById(req.params.id).select('ratings')
+
+    if (!target) {
+      next(createError(404, 'Target not found'))
+      return
+    }
+
+    res.json(target.ratings)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
 })
 
-router.get('/targets/:id/submissions', function (req, res, next) {
-  const page = req.query.page || 0
+router.get('/targets/:id/submissions', async function (req, res, next) {
+  try {
+    const target = await Target.findById(req.params.id)
 
-  Target.findById(req.params.id)
-    .then(target => {
-      if (!target) {
-        next(createError(404, 'Target not found'))
-      } else {
-        return Submission.paginate({
-          targetId: target._id
-        }, {
-          page: page,
-          limit: 10,
-          customLabels: {
-            docs: 'submissions'
-          }
-        })
+    if (!target) {
+      next(createError(404, 'Target not found'))
+      return
+    }
+
+    const page = req.query.page || 0
+    const sort = req.query.sort ? `field ${req.query.sort}` : undefined
+    const query = req.query.user ? { userId: req.query.user } : {}
+
+    const submissions = await Submission.paginate({
+      targetId: target._id,
+      ...query
+    }, {
+      page: page,
+      sort: sort,
+      limit: 10,
+      customLabels: {
+        docs: 'submissions'
       }
     })
-    .then(result => {
-      res.json(result)
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+
+    res.json(submissions)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
 })
 
-router.get('/targets/:id/submissions/:submissionId', function (req, res, next) {
-  Target.findById(req.params.id)
-    .then(target => {
-      if (!target) {
-        next(createError(404, 'Target not found'))
-      } else {
-        return Submission.findById(req.params.submissionId)
-      }
-    })
-    .then(submission => {
-      if (!submission) {
-        next(createError(404, 'Submission not found'))
-      } else {
-        res.json(submission)
-      }
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+router.get('/targets/:id/submissions/:submissionId', async function (req, res, next) {
+  try {
+    const target = await Target.findById(req.params.id)
+
+    if (!target) {
+      next(createError(404, 'Target not found'))
+      return
+    }
+
+    const submission = await Submission.findById(req.params.submissionId)
+
+    if (!submission) {
+      next(createError(404, 'Submission not found'))
+      return
+    }
+
+    res.json(submission)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
 })
 
-router.get('/targets/:id/submissions/:submissionId/image', function (req, res, next) {
-  Target.findById(req.params.id)
-    .then(target => {
-      if (!target) {
-        next(createError(404, 'Target not found'))
-      } else {
-        return Submission.findById(req.params.submissionId).select('image')
-      }
-    })
-    .then(submission => {
-      if (!submission) {
-        next(createError(404, 'Submission not found'))
-      } else {
-        res.send(submission.image)
-      }
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+router.get('/targets/:id/submissions/:submissionId/image', async function (req, res, next) {
+  try {
+    const target = await Target.findById(req.params.id)
+
+    if (!target) {
+      next(createError(404, 'Target not found'))
+      return
+    }
+
+    const submission = await Submission.findById(req.params.submissionId).select('image targetId')
+
+    if (!submission || submission.targetId !== target._id) {
+      next(createError(404, 'Submission not found'))
+      return
+    }
+
+    res.send(submission.image)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
 })
 
 module.exports = router

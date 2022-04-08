@@ -20,6 +20,7 @@ function initialize (passport) {
 
   forwarder.get('/targets')
   forwarder.get('/targets/:id')
+  forwarder.get('/targets/:id/ratings')
   forwarder.get('/targets/:id/image', undefined, undefined, undefined, handleImage)
   forwarder.get('/targets/:id/submissions')
   forwarder.get('/targets/:id/submissions/:submissionId')
