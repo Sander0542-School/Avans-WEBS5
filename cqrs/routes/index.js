@@ -88,6 +88,7 @@ router.get('/targets/:id/submissions', async function (req, res, next) {
       ...query
     }, {
       page: page,
+      sort: sort,
       limit: 10,
       customLabels: {
         docs: 'submissions'
