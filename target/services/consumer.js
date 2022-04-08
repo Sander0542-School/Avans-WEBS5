@@ -12,7 +12,7 @@ function initialize (rabbitMqConnection) {
 
             Target.findByIdAndUpdate(content.targetId, { tags: content.tags }, { returnDocument: 'after' })
               .then(target => {
-                console.log(`Updated target ${target.id} with ${content.tags.count} tags`)
+                console.log(`Updated target ${target._id} with ${content.tags.count} tags`)
                 channel.ack(message)
 
                 channel.assertQueue('webs.cqrs.target')
