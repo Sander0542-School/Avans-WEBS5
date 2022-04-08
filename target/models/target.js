@@ -36,7 +36,7 @@ const schema = new mongoose.Schema({
   place: {
     type: String,
     required: true,
-    maxLength: 64,
+    maxLength: 64
   },
   lat: {
     type: Number,

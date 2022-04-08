@@ -3,7 +3,7 @@ const express = require('express')
 const Forwarder = require('../services/forwarder')
 const parseDataUrl = require('parse-data-url')
 
-function handleImage(res, axios) {
+function handleImage (res, axios) {
   if (axios.status === 200) {
     const parsed = parseDataUrl(axios.data)
     if (parsed) {

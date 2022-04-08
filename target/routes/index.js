@@ -39,15 +39,15 @@ function initialize (rabbitMqConnection) {
           channel.sendToQueue(taggerQueue.queue, Buffer.from(JSON.stringify({
             sender: 'webs.target.tags',
             targetId: target._id.toString(),
-            image: parseDataUrl(target.image).data,
+            image: parseDataUrl(target.image).data
           })), {
-            persistent: true,
+            persistent: true
           })
           channel.sendToQueue(submissionQueue.queue, Buffer.from(JSON.stringify({
             _id: target._id.toString(),
-            userId: target.userId,
+            userId: target.userId
           })), {
-            persistent: true,
+            persistent: true
           })
         })
         .catch((error) => {
