@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  hash: {
-    type: String,
+  targetId: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
   tags: {
