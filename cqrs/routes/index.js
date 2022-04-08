@@ -55,6 +55,21 @@ router.get('/targets/:id/image', async function (req, res, next) {
   }
 })
 
+router.get('/targets/:id/ratings', async function (req, res, next) {
+  try {
+    const target = await Target.findById(req.params.id).select('ratings')
+
+    if (!target) {
+      next(createError(404, 'Target not found'))
+      return
+    }
+
+    res.json(target.ratings)
+  } catch (error) {
+    next(createError(500, error.message))
+  }
+})
+
 router.get('/targets/:id/submissions', async function (req, res, next) {
   try {
     const target = await Target.findById(req.params.id)
