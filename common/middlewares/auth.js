@@ -11,7 +11,7 @@ function initialize (apiKey) {
   const passport = require('passport')
   const strategy = new JwtStrategy(options, (payload, done) => {
     if (payload.token && payload.token === apiKey) {
-      return done(null, { userId: payload.sub })
+      return done(null, payload.user)
     }
     return done(null, false)
   })

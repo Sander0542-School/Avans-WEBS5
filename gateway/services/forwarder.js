@@ -10,7 +10,7 @@ module.exports = class Forwarder {
   _handler (method, url, body, handler) {
     handler = handler || (() => undefined)
     return (req, res, next) => {
-      this.breaker.fire(method || req.method, url || req.url, req.user.id, body || req.body)
+      this.breaker.fire(method || req.method, url || req.url, req.user, body || req.body)
         .then(response => handler(res, response) || res.status(response.status).send(response.data))
         .catch(error => next(createError(500, error.message)))
     }
