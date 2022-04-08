@@ -7,9 +7,12 @@ const Target = require('../models/target')
 router.get('/targets', async function (req, res, next) {
   try {
     const page = req.query.page || 0
+    const sort = req.query.sort ? `field ${req.query.sort}` : undefined
+    const query = req.query.place ? { place: req.query.place } : {}
 
-    const targets = await Target.paginate({}, {
+    const targets = await Target.paginate(query, {
       page: page,
+      sort: sort,
       limit: 10,
       customLabels: {
         docs: 'targets'
