@@ -33,7 +33,7 @@ RabbitMQ()
                 })
 
               Tag.create({
-                targetId: content.targetId,
+                documentId: content.documentId,
                 tags: tags
               })
                 .then(() => {

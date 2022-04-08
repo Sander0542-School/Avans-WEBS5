@@ -38,7 +38,7 @@ function initialize (rabbitMqConnection) {
           res.status(201).json(target)
           channel.sendToQueue(taggerQueue.queue, Buffer.from(JSON.stringify({
             sender: 'webs.target.tags',
-            targetId: target._id.toString(),
+            documentId: target._id.toString(),
             image: parseDataUrl(target.image).data
           })), {
             persistent: true

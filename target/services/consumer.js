@@ -10,7 +10,7 @@ function initialize (rabbitMqConnection) {
           channel.consume(queue.queue, message => {
             const content = JSON.parse(message.content.toString())
 
-            Target.findByIdAndUpdate(content.targetId, { tags: content.tags }, { returnDocument: 'after' })
+            Target.findByIdAndUpdate(content.documentId, { tags: content.tags }, { returnDocument: 'after' })
               .then(target => {
                 console.log(`Updated target ${target._id} with ${content.tags.count} tags`)
                 channel.ack(message)
