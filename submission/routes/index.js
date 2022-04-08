@@ -18,42 +18,38 @@ function initialize (rabbitMqConnection) {
       cqrsQueue = await channel.assertQueue('webs.cqrs.submission', { durable: true })
     })
 
-  router.post('/targets/:id/submissions', function (req, res, next) {
-    Target.findById(req.params.id)
-      .then(target => {
-        if (!target) {
-          next(createError(404, 'Target not found'))
-          return
-        }
+  router.post('/targets/:id/submissions', async function (req, res, next) {
+    try {
+      const target = await Target.findById(req.params.id)
+      if (!target) {
+        next(createError(404, 'Target not found'))
+        return
+      }
 
-        const submission = new Submission({
-          targetId: target._id,
-          userId: req.user.id,
-          ...req.body
-        })
-        const error = submission.validateSync()
+      const submission = new Submission({
+        targetId: target._id,
+        userId: req.user.id,
+        ...req.body
+      })
+      const error = submission.validateSync()
 
-        if (error) {
-          res.status(400).json(error)
-        } else {
-          return submission.save()
-        }
+      if (error) {
+        res.status(400).json(error)
+        return
+      }
+
+      await submission.save()
+      channel.sendToQueue(taggerQueue.queue, Buffer.from(JSON.stringify({
+        sender: 'webs.submission.tags',
+        documentId: submission._id.toString(),
+        image: parseDataUrl(submission.image).data
+      })), {
+        persistent: true
       })
-      .then(submission => {
-        if (submission) {
-          res.status(201).json(submission)
-          channel.sendToQueue(taggerQueue.queue, Buffer.from(JSON.stringify({
-            sender: 'webs.submission.tags',
-            documentId: submission._id.toString(),
-            image: parseDataUrl(submission.image).data
-          })), {
-            persistent: true
-          })
-        }
-      })
-      .catch(error => {
-        next(createError(500, error.message))
-      })
+      res.status(202).json(submission)
+    } catch (error) {
+      next(createError(500, error.message))
+    }
   })
 
   router.delete('/targets/:id/submissions/:submissionId', async function (req, res, next) {
