@@ -13,8 +13,7 @@ const schema = new mongoose.Schema({
   },
   tags: {
     type: mongoose.Schema.Types.Map,
-    required: true,
-    default: {}
+    required: true
   },
   ratings: [{
     userId: {
