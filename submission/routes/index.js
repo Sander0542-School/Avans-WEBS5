@@ -82,7 +82,6 @@ function initialize (rabbitMqConnection) {
         action: 'delete',
         id: submission._id.toString()
       })))
-
     } catch (error) {
       next(createError(500, error.message))
     }
