@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 class Database {
   static initialize () {
-    mongoose.connect(process.env.TAGGER_MONGO_URL)
+    mongoose.connect(process.env.TARGET_MONGO_URL)
       .then(() => {
         console.log('Connected to MongoDB')
       })
