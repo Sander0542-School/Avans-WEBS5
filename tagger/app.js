@@ -24,7 +24,7 @@ RabbitMQ()
               })
                 .then(returnQueue => {
                   channel.sendToQueue(returnQueue.queue, Buffer.from(JSON.stringify({
-                    targetId: content.targetId,
+                    documentId: content.documentId,
                     tags
                   })), {
                     persistent: true
@@ -33,14 +33,14 @@ RabbitMQ()
                 })
 
               Tag.create({
-                targetId: content.targetId,
+                documentId: content.documentId,
                 tags: tags
               })
                 .then(() => {
                   console.log('Tag saved')
                 })
                 .catch(error => {
-                  console.log(error)
+                  console.error(error)
                 })
             })
           })

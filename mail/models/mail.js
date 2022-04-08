@@ -20,4 +20,4 @@ const schema = new mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('Tag', schema)
+module.exports = mongoose.model('Mail', schema)

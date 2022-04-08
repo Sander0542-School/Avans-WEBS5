@@ -10,16 +10,23 @@ function initialize (rabbitMqConnection) {
           channel.consume(queue.queue, message => {
             const content = JSON.parse(message.content.toString())
 
-            Target.findByIdAndUpdate(content.targetId, { tags: content.tags }, { returnDocument: 'after' })
+            Target.findByIdAndUpdate(content.documentId, { tags: content.tags }, { returnDocument: 'after' })
               .then(target => {
                 console.log(`Updated target ${target._id} with ${content.tags.count} tags`)
                 channel.ack(message)
 
-                channel.assertQueue('webs.cqrs.target')
+                channel.assertQueue('webs.cqrs.target', { durable: true })
                   .then(queue => {
                     channel.sendToQueue(queue.queue, Buffer.from(JSON.stringify({
                       action: 'create',
                       data: target
+                    })))
+                  })
+                channel.assertQueue('webs.submission.target', { durable: true })
+                  .then(queue => {
+                    channel.sendToQueue(queue.queue, Buffer.from(JSON.stringify({
+                      _id: target._id.toString(),
+                      userId: target.userId.toString()
                     })))
                   })
               })
