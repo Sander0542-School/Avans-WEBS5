@@ -2,13 +2,17 @@ const mongoose = require('mongoose')
 const mongoosePaginate = require('mongoose-paginate-v2')
 
 const schema = new mongoose.Schema({
-  content: {
+  description: {
+    type: String,
+    required: true
+  },
+  image: {
     type: String,
     required: true
   },
   ratings: [{
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true
     },
     vote: {
@@ -20,16 +24,16 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  x: {
+  lat: {
     type: Number,
     required: true
   },
-  y: {
+  long: {
     type: Number,
     required: true
   },
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   }
 })
