@@ -7,7 +7,7 @@ module.exports = function initialize () {
     .then(connection => {
       connection.createChannel()
         .then(channel => {
-          channel.assertQueue('webs.cqrs.targets', {
+          channel.assertQueue('webs.cqrs.target', {
             durable: true
           })
             .then(queue => {
@@ -33,7 +33,7 @@ module.exports = function initialize () {
               })
             })
 
-          channel.assertQueue('webs.cqrs.submissions', {
+          channel.assertQueue('webs.cqrs.submission', {
             durable: true
           })
             .then(queue => {

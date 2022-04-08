@@ -11,6 +11,11 @@ const schema = new mongoose.Schema({
     required: true,
     select: false
   },
+  tags: {
+    type: mongoose.Schema.Types.Map,
+    required: true,
+    default: {}
+  },
   ratings: [{
     userId: {
       type: mongoose.Schema.Types.ObjectId,
