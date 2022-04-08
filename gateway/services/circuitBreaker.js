@@ -9,26 +9,25 @@ const options = {
 }
 
 function initialize (host, port, token) {
-  return new CircuitBreaker(function (method, uri, user, body) {
-    return new Promise((resolve, reject) => {
-      axios({
-        method: method,
-        url: `http://${host}:${port}${uri}`,
-        data: body,
-        headers: {
-          Authorization: `Bearer ${jwt.sign({
-            token,
-            user
-          }, { subject: 'gateway' })}`
-        },
-        validateStatus: false
-      })
-        .then(response => {
-          resolve(response)
+  return new CircuitBreaker((method, uri, user, body) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const response = axios({
+          method: method,
+          url: `http://${host}:${port}${uri}`,
+          data: body,
+          headers: {
+            Authorization: `Bearer ${jwt.sign({
+              token,
+              user
+            }, { subject: 'gateway' })}`
+          },
+          validateStatus: false
         })
-        .catch(error => {
-          reject(error)
-        })
+        resolve(response)
+      } catch (error) {
+        reject(error)
+      }
     })
   }, options)
 }
