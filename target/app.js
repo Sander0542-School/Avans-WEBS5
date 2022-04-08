@@ -20,12 +20,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(logger('dev'))
 app.use(Prometheus)
-app.use(Auth(process.env.SUBMISSION_API_KEY))
-
-app.use('/', indexRouter)
+app.use(Auth(process.env.TARGET_API_KEY))
 
 RabbitMQ()
   .then(connection => {
+    app.use('/', indexRouter(connection))
     consumer(connection)
   })
 

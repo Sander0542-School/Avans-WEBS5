@@ -7,7 +7,7 @@ module.exports = function initialize () {
     .then(connection => {
       connection.createChannel()
         .then(channel => {
-          channel.assertQueue('webs.targets', {
+          channel.assertQueue('webs.cqrs.target', {
             durable: true
           })
             .then(queue => {
@@ -18,22 +18,22 @@ module.exports = function initialize () {
                   switch (action.action) {
                     case 'create':
                       await Target.create(action.data)
+                      channel.ack(message)
                       console.log('Target created')
                       break
                     case 'delete':
                       await Target.delete(action.id)
+                      channel.ack(message)
                       console.log(`Target ${action.id} deleted`)
                       break
                   }
                 } catch (error) {
                   console.error(error)
                 }
-              }, {
-                noAck: true
               })
             })
 
-          channel.assertQueue('webs.submissions', {
+          channel.assertQueue('webs.cqrs.submission', {
             durable: true
           })
             .then(queue => {
@@ -44,18 +44,18 @@ module.exports = function initialize () {
                   switch (action.action) {
                     case 'create':
                       await Submission.create(action.data)
+                      channel.ack(message)
                       console.log('Submission created')
                       break
                     case 'delete':
                       await Submission.delete(action.id)
+                      channel.ack(message)
                       console.log(`Submission ${action.id} deleted`)
                       break
                   }
                 } catch (error) {
                   console.error(error)
                 }
-              }, {
-                noAck: true
               })
             })
         })

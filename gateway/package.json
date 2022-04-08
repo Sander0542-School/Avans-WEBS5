@@ -22,6 +22,7 @@
     "mongoose": "^6.2.9",
     "morgan": "~1.9.1",
     "opossum": "^6.3.0",
+    "parse-data-url": "^4.0.1",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0"
   },

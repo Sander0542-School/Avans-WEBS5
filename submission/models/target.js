@@ -1,14 +1,10 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  targetId: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true
-  },
-  tags: {
-    type: mongoose.Schema.Types.Map,
     required: true
   }
 })
 
-module.exports = mongoose.model('Tag', schema)
+module.exports = mongoose.model('Target', schema)

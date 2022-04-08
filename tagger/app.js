@@ -1,6 +1,5 @@
 const { RabbitMQ } = require('avans-common')
 const database = require('./services/database')
-const md5 = require('md5')
 const Imagga = require('./services/imagga')
 const Tag = require('./models/tag')
 
@@ -20,20 +19,29 @@ RabbitMQ()
               const content = JSON.parse(message.content.toString())
               const tags = await imagga.tag(content.image)
 
-              channel.assertQueue(`${queueName}.${content.sender}`, {
+              channel.assertQueue(content.sender, {
                 durable: true
               })
                 .then(returnQueue => {
-                  channel.sendToQueue(returnQueue.queue, Buffer.from(JSON.stringify(tags)), {
+                  channel.sendToQueue(returnQueue.queue, Buffer.from(JSON.stringify({
+                    targetId: content.targetId,
+                    tags
+                  })), {
                     persistent: true
                   })
+                  channel.ack(message)
                 })
 
-              const tag = new Tag({
-                hash: md5(content.image),
+              Tag.create({
+                targetId: content.targetId,
                 tags: tags
               })
-              tag.save()
+                .then(() => {
+                  console.log('Tag saved')
+                })
+                .catch(error => {
+                  console.log(error)
+                })
             })
           })
       })

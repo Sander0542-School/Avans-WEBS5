@@ -3,7 +3,7 @@ const mongoosePaginate = require('mongoose-paginate-v2')
 
 const schema = new mongoose.Schema({
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: true
   },
   targetId: {
@@ -12,7 +12,8 @@ const schema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true
+    required: true,
+    select: false
   },
   tags: {
     type: mongoose.Schema.Types.Map,

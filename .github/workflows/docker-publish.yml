@@ -67,6 +67,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-tagger
 
+      - name: Extract Docker metadata for Target
+        id: meta-target
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-target
+
       - name: Build and push Docker image CQRS
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
@@ -106,3 +112,11 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-tagger.outputs.tags }}
           labels: ${{ steps.meta-tagger.outputs.labels }}
+
+      - name: Build and push Docker image Target
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          file: './target/Dockerfile'
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-target.outputs.tags }}
+          labels: ${{ steps.meta-target.outputs.labels }}
