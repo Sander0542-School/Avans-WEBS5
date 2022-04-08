@@ -8,6 +8,7 @@ function initialize (passport) {
   const forwarder = new Forwarder(router, breaker, passport)
 
   forwarder.post('/targets/:id/submissions')
+  forwarder.delete('/targets/:id/submissions/:submissionId')
 
   return router
 }

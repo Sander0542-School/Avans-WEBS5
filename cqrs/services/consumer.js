@@ -22,7 +22,8 @@ module.exports = function initialize () {
                       console.log('Target created')
                       break
                     case 'delete':
-                      await Target.delete(action.id)
+                      await Target.findByIdAndDelete(action.id)
+                      await Submission.deleteMany({ targetId: action.id })
                       channel.ack(message)
                       console.log(`Target ${action.id} deleted`)
                       break
@@ -48,7 +49,7 @@ module.exports = function initialize () {
                       console.log('Submission created')
                       break
                     case 'delete':
-                      await Submission.delete(action.id)
+                      await Submission.findByIdAndDelete(action.id)
                       channel.ack(message)
                       console.log(`Submission ${action.id} deleted`)
                       break

@@ -20,7 +20,7 @@ function initialize (rabbitMqConnection) {
 
   router.post('/targets', function (req, res, next) {
     const target = new Target({
-      userId: req.user.userId,
+      userId: req.user.id,
       ...req.body
     })
     const error = target.validateSync()
