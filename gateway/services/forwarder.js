@@ -22,4 +22,16 @@ module.exports = class Forwarder {
   post (path, forwardPath, forwardMethod, forwardBody) {
     this.router.post(path, this.passport, this._handler(forwardMethod, forwardPath, forwardBody))
   }
+
+  put (path, forwardPath, forwardMethod, forwardBody) {
+    this.router.put(path, this.passport, this._handler(forwardMethod, forwardPath, forwardBody))
+  }
+
+  patch (path, forwardPath, forwardMethod, forwardBody) {
+    this.router.patch(path, this.passport, this._handler(forwardMethod, forwardPath, forwardBody))
+  }
+
+  delete (path, forwardPath, forwardMethod, forwardBody) {
+    this.router.delete(path, this.passport, this._handler(forwardMethod, forwardPath, forwardBody))
+  }
 }

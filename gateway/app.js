@@ -14,6 +14,7 @@ const passport = require('./services/passport')
 const authRouter = require('./routes/auth')
 const cqrsRouter = require('./routes/cqrs')
 const indexRouter = require('./routes/index')
+const targetRouter = require('./routes/target')
 
 const roles = new ConnectRoles()
 
@@ -40,9 +41,10 @@ app.use('/grafana', proxy('http://grafana:3000/', {
 app.use('/prometheus', proxy('http://prometheus:9090/'))
 
 app.use(Prometheus)
+app.use('/', authRouter)
 app.use('/', indexRouter(passport, roles))
 app.use('/', cqrsRouter(passport))
-app.use('/', authRouter)
+app.use('/', targetRouter(passport))
 
 app.use(Errors)
 
