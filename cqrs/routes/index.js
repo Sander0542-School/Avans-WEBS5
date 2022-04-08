@@ -31,6 +31,7 @@ router.get('/targets/:id', async function (req, res, next) {
 
     if (!target) {
       next(createError(404, 'Target not found'))
+      return
     }
 
     res.json(target)
@@ -45,6 +46,7 @@ router.get('/targets/:id/image', async function (req, res, next) {
 
     if (!target) {
       next(createError(404, 'Target not found'))
+      return
     }
 
     res.send(target.image)
@@ -60,6 +62,7 @@ router.get('/targets/:id/submissions', async function (req, res, next) {
 
     if (!target) {
       next(createError(404, 'Target not found'))
+      return
     }
 
     const submissions = await Submission.paginate({
@@ -84,12 +87,14 @@ router.get('/targets/:id/submissions/:submissionId', async function (req, res, n
 
     if (!target) {
       next(createError(404, 'Target not found'))
+      return
     }
 
     const submission = await Submission.findById(req.params.submissionId)
 
     if (!submission) {
       next(createError(404, 'Submission not found'))
+      return
     }
 
     res.json(submission)
@@ -104,12 +109,14 @@ router.get('/targets/:id/submissions/:submissionId/image', async function (req, 
 
     if (!target) {
       next(createError(404, 'Target not found'))
+      return
     }
 
     const submission = await Submission.findById(req.params.submissionId).select('image targetId')
 
     if (!submission || submission.targetId !== target._id) {
       next(createError(404, 'Submission not found'))
+      return
     }
 
     res.send(submission.image)
