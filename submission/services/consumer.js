@@ -9,7 +9,7 @@ function initialize (rabbitMqConnection) {
         try {
           const content = JSON.parse(message.content.toString())
 
-          await Target.create(content)
+          const target = await Target.create(content)
           console.log(`Target ${target._id} created`)
 
           channel.ack(message)
