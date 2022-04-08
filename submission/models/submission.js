@@ -11,8 +11,7 @@ const schema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
-    select: false
+    required: true
   },
   tags: {
     type: mongoose.Schema.Types.Map,
