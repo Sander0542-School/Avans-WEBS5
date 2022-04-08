@@ -1,7 +1,9 @@
-const express = require('express')
-const User = require('../models/user')
-const jwt = require('../services/token')
+const bcrypt = require('bcrypt')
 const createError = require('http-errors')
+const express = require('express')
+const jwt = require('../services/token')
+const mongoose = require('mongoose')
+const User = require('../models/user')
 
 const router = express.Router()
 
@@ -20,55 +22,52 @@ router.get('/login', function (req, res) {
   })
 })
 
-router.post('/register', function (req, res, next) {
-  if (req.body.email === undefined || req.body.password === undefined) {
-    next(createError(400))
-    return
-  }
+router.post('/register', async function (req, res, next) {
+  try {
+    const user = new User({
+      email: req.body.email,
+      password: await bcrypt.hash(req.body.password, 10),
+      isOwner: req.body.isOwner
+    })
 
-  User.findOne({
-    email: req.body.email
-  })
-    .exec()
-    .then(user => {
-      if (user) {
-        next(createError(400, 'Email already taken'))
-      } else {
-        const newUser = new User(req.body)
-        return newUser.save()
-      }
-    })
-    .then(user => {
-      if (user) {
-        res.json(tokenResponse(generateToken(user)))
-      }
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+    const error = user.validateSync()
+    if (error) {
+      res.status(400).json(error)
+      return
+    }
+
+    await user.save()
+
+    res.json(tokenResponse(generateToken(user)))
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      res.status(400).json(error)
+      return
+    }
+    console.error(error)
+    next(createError(500, error.message))
+  }
 })
 
-router.post('/login', function (req, res, next) {
-  if (req.body.email === undefined || req.body.password === undefined) {
-    next(createError(400))
-    return
-  }
+router.post('/login', async function (req, res, next) {
+  try {
+    const user = await User.findOne({ email: req.body.email })
+    if (!user) {
+      next(createError(401, 'Invalid email or password'))
+      return
+    }
 
-  User.findOne({
-    email: req.body.email,
-    password: req.body.password
-  })
-    .exec()
-    .then(user => {
-      if (user) {
-        res.json(tokenResponse(generateToken(user)))
-      } else {
-        next(createError(403, 'Invalid credentials'))
-      }
-    })
-    .catch(error => {
-      next(createError(500, error.message))
-    })
+    const isValid = await bcrypt.compare(req.body.password, user.password)
+    if (!isValid) {
+      next(createError(401, 'Invalid email or password'))
+      return
+    }
+
+    res.json(tokenResponse(generateToken(user)))
+  } catch (error) {
+    console.error(error)
+    next(createError(500, error.message))
+  }
 })
 
 function generateToken (user) {
