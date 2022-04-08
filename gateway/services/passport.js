@@ -8,16 +8,19 @@ const options = {
   secretOrKey: process.env.JWT_SECRET
 }
 
-const strategy = new JwtStrategy(options, (payload, done) => {
-  const authService = new AuthService()
-  authService.getExistingPayload(payload)
-    .then(user => {
-      if (!user) return done(null, false)
-      if (user) return done(null, user)
-    })
-    .catch(error => {
-      return done(error, false)
-    })
+const strategy = new JwtStrategy(options, async (payload, done) => {
+  try {
+    const authService = new AuthService()
+    const user = await authService.getExistingPayload(payload)
+
+    if (user) {
+      done(null, user)
+    } else {
+      done(null, false)
+    }
+  } catch (error) {
+    done(error, false)
+  }
 })
 passport.use(strategy)
 
