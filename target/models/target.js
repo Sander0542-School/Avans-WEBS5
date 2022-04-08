@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validDataUrl = require('valid-data-url')
+const validCoords = require('is-valid-coordinates')
 
 const schema = new mongoose.Schema({
   description: {
@@ -42,7 +43,7 @@ const schema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (v) {
-        return /^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/.test(v)
+        return validCoords.latitude(v)
       },
       message: props => `${props.value} is not a valid lat`
     }
@@ -52,7 +53,7 @@ const schema = new mongoose.Schema({
     required: true,
     validate: {
       validator: function (v) {
-        return /^-?((1?[1-7][1-9]|[1-9]?[0-9])\.{1}\d{1,6}|180\.{1}0{1,6})$/.test(v)
+        return validCoords.longitude(v)
       },
       message: props => `${props.value} is not a valid long`
     }
