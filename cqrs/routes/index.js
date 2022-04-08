@@ -36,6 +36,21 @@ router.get('/targets/:id', function (req, res, next) {
     })
 })
 
+router.get('/targets/:id/image', function (req, res, next) {
+  Target.findById(req.params.id)
+    .select('image')
+    .then(target => {
+      if (!target) {
+        next(createError(404, 'Target not found'))
+      } else {
+        res.send(target.image)
+      }
+    })
+    .catch(error => {
+      next(createError(500, error.message))
+    })
+})
+
 router.get('/targets/:id/submissions', function (req, res, next) {
   const page = req.query.page || 0
 
@@ -45,7 +60,7 @@ router.get('/targets/:id/submissions', function (req, res, next) {
         next(createError(404, 'Target not found'))
       } else {
         return Submission.paginate({
-          target: target._id
+          targetId: target._id
         }, {
           page: page,
           limit: 10,
@@ -63,7 +78,7 @@ router.get('/targets/:id/submissions', function (req, res, next) {
     })
 })
 
-router.get('/target/:id/submissions/:submissionId', function (req, res, next) {
+router.get('/targets/:id/submissions/:submissionId', function (req, res, next) {
   Target.findById(req.params.id)
     .then(target => {
       if (!target) {
@@ -77,6 +92,27 @@ router.get('/target/:id/submissions/:submissionId', function (req, res, next) {
         next(createError(404, 'Submission not found'))
       } else {
         res.json(submission)
+      }
+    })
+    .catch(error => {
+      next(createError(500, error.message))
+    })
+})
+
+router.get('/targets/:id/submissions/:submissionId/image', function (req, res, next) {
+  Target.findById(req.params.id)
+    .then(target => {
+      if (!target) {
+        next(createError(404, 'Target not found'))
+      } else {
+        return Submission.findById(req.params.submissionId).select('image')
+      }
+    })
+    .then(submission => {
+      if (!submission) {
+        next(createError(404, 'Submission not found'))
+      } else {
+        res.send(submission.image)
       }
     })
     .catch(error => {
