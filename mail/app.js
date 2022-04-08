@@ -19,6 +19,7 @@ RabbitMQ()
 
               if (success) {
                 console.log(`Mail sent to ${content.to}`)
+                channel.ack(message)
               } else {
                 console.log(`Could not send mail to ${content.to}`)
               }
@@ -28,8 +29,6 @@ RabbitMQ()
                 ...content
               })
               mail.save()
-            }, {
-              noAck: true
             })
           })
       })
