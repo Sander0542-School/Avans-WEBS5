@@ -8,9 +8,9 @@ scrape_configs:
   - job_name: 'cqrs'
     static_configs:
       - targets: [ 'cqrs:3000' ]
-#  - job_name: 'target'
-#    static_configs:
-#      - targets: [ 'target:3000' ]
+  - job_name: 'target'
+    static_configs:
+      - targets: [ 'target:3000' ]
   - job_name: 'submission'
     static_configs:
       - targets: [ 'submission:3000' ]

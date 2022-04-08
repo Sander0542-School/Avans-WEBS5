@@ -20,7 +20,7 @@ services:
       - mail
       - submission
       - tagger
-#      - target
+      - target
 
   cqrs:
     build:
@@ -37,20 +37,20 @@ services:
       - cqrsdata
       - rabbitmq
 
-#  target:
-#    build:
-#      context: .
-#      dockerfile: target/Dockerfile
-#    environment:
-#      TARGET_PORT: 3000
-#      TARGET_MONGO_URL: "mongodb://targetdata:27017/target"
-#      JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
-#      TARGET_API_KEY: ggqpfZtSJHY4Vv8V
-#    expose:
-#      - 3000
-#    depends_on:
-#      - targetdata
-#      - rabbitmq
+  target:
+    build:
+      context: .
+      dockerfile: target/Dockerfile
+    environment:
+      TARGET_PORT: 3000
+      TARGET_MONGO_URL: "mongodb://targetdata:27017/target"
+      JWT_SECRET: cVF9U3fQPqLMhB6ZjzWprDzrWUPggeDvnJxfWs8Sw754XUPc2L5fP4UuDPU4phRK
+      TARGET_API_KEY: ggqpfZtSJHY4Vv8V
+    expose:
+      - 3000
+    depends_on:
+      - targetdata
+      - rabbitmq
 
   submission:
     build:
@@ -104,13 +104,13 @@ services:
     volumes:
       - data_cqrs:/data/db
 
-#  targetdata:
-#    image: mongo:latest
-#    restart: always
-#    expose:
-#      - 27017
-#    volumes:
-#      - data_target:/data/db
+  targetdata:
+    image: mongo:latest
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - data_target:/data/db
 
   submissiondata:
     image: mongo:latest
@@ -185,7 +185,7 @@ services:
 volumes:
   data_gateway:
   data_cqrs:
-#  data_target:
+  data_target:
   data_submission:
   data_tagger:
   data_mail:
