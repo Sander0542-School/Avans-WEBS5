@@ -52,7 +52,7 @@ function initialize (rabbitMqConnection) {
           })
         }
       })
-      .catch((error) => {
+      .catch(error => {
         next(createError(500, error.message))
       })
   })

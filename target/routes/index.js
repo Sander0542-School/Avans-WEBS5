@@ -39,7 +39,7 @@ function initialize (rabbitMqConnection) {
             persistent: true
           })
         })
-        .catch((error) => {
+        .catch(error => {
           next(createError(500, error.message))
         })
     }

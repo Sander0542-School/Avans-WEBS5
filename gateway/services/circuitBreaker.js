@@ -23,7 +23,9 @@ function initialize (host, port, token) {
         .then(response => {
           resolve(response)
         })
-        .catch(reject)
+        .catch(error => {
+          reject(error)
+        })
     })
   }, options)
 }
