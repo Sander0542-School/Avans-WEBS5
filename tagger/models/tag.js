@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
-  targetId: {
+  documentId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },

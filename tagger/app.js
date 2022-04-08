@@ -24,7 +24,7 @@ RabbitMQ()
               })
                 .then(returnQueue => {
                   channel.sendToQueue(returnQueue.queue, Buffer.from(JSON.stringify({
-                    targetId: content.targetId,
+                    documentId: content.documentId,
                     tags
                   })), {
                     persistent: true
