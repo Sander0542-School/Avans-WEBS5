@@ -4,7 +4,7 @@ const router = express.Router()
 const Submission = require('../models/submission')
 const Target = require('../models/target')
 
-router.get('/targets', function (req, res, next) {
+router.get('/targets', async function (req, res, next) {
   const page = req.query.page || 0
 
   Target.paginate({}, {
@@ -22,7 +22,7 @@ router.get('/targets', function (req, res, next) {
     })
 })
 
-router.get('/targets/:id', function (req, res, next) {
+router.get('/targets/:id', async function (req, res, next) {
   Target.findById(req.params.id)
     .then(target => {
       if (!target) {
@@ -36,7 +36,7 @@ router.get('/targets/:id', function (req, res, next) {
     })
 })
 
-router.get('/targets/:id/image', function (req, res, next) {
+router.get('/targets/:id/image', async function (req, res, next) {
   Target.findById(req.params.id)
     .select('image')
     .then(target => {
@@ -51,7 +51,7 @@ router.get('/targets/:id/image', function (req, res, next) {
     })
 })
 
-router.get('/targets/:id/submissions', function (req, res, next) {
+router.get('/targets/:id/submissions', async function (req, res, next) {
   const page = req.query.page || 0
 
   Target.findById(req.params.id)
@@ -78,7 +78,7 @@ router.get('/targets/:id/submissions', function (req, res, next) {
     })
 })
 
-router.get('/targets/:id/submissions/:submissionId', function (req, res, next) {
+router.get('/targets/:id/submissions/:submissionId', async function (req, res, next) {
   Target.findById(req.params.id)
     .then(target => {
       if (!target) {
@@ -99,7 +99,7 @@ router.get('/targets/:id/submissions/:submissionId', function (req, res, next) {
     })
 })
 
-router.get('/targets/:id/submissions/:submissionId/image', function (req, res, next) {
+router.get('/targets/:id/submissions/:submissionId/image', async function (req, res, next) {
   Target.findById(req.params.id)
     .then(target => {
       if (!target) {
