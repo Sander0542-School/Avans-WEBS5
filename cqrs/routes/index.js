@@ -116,7 +116,7 @@ router.get('/targets/:id/submissions/:submissionId', async function (req, res, n
 
     const submission = await Submission.findById(req.params.submissionId)
 
-    if (!submission || !(req.user.isOwner || req.user.id === submission.userId.toString() || req.user.id === target.userId.toString())) {
+    if (!submission || submission.targetId.toString() !== target._id.toString() || !(req.user.isOwner || req.user.id === submission.userId.toString() || req.user.id === target.userId.toString())) {
       next(createError(404, 'Submission not found'))
       return
     }
@@ -136,9 +136,9 @@ router.get('/targets/:id/submissions/:submissionId/image', async function (req, 
       return
     }
 
-    const submission = await Submission.findById(req.params.submissionId).select('image targetId')
+    const submission = await Submission.findById(req.params.submissionId).select('image targetId userId')
 
-    if (!submission || submission.targetId !== target._id) {
+    if (!submission || submission.targetId.toString() !== target._id.toString() || !(req.user.isOwner || req.user.id === submission.userId.toString() || req.user.id === target.userId.toString())) {
       next(createError(404, 'Submission not found'))
       return
     }
