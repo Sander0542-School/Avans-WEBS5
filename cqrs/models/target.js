@@ -41,15 +41,15 @@ const schema = new mongoose.Schema({
 schema.plugin(mongoosePaginate)
 
 schema.virtual('score').get(function () {
-  let score = 0;
-  for (const rating in Object.values(ratings)) {
+  let score = 0
+  for (const rating in Object.values(this.ratings)) {
     if (rating) {
-      score++;
+      score++
     } else {
-      score--;
+      score--
     }
   }
-  return score;
+  return score
 })
 
 module.exports = mongoose.model('Target', schema)
