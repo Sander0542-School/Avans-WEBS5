@@ -57,7 +57,7 @@ function initialize (rabbitMqConnection) {
       target.ratings.set(req.user.id, req.body.vote)
       target.save()
 
-      res.status(202).json('rating added')
+      res.status(202).json(target)
 
       channel.sendToQueue(cqrsQueue.queue, Buffer.from(JSON.stringify({
         action: 'rating',
