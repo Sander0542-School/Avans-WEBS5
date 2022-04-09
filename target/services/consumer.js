@@ -27,8 +27,11 @@ function initialize (rabbitMqConnection) {
                 channel.assertQueue('webs.submission.target', { durable: true })
                   .then(queue => {
                     channel.sendToQueue(queue.queue, Buffer.from(JSON.stringify({
-                      _id: target._id.toString(),
-                      userId: target.userId.toString()
+                      action: 'create',
+                      data: {
+                        _id: target._id.toString(),
+                        userId: target.userId.toString()
+                      }
                     })), {
                       persistent: true
                     })
