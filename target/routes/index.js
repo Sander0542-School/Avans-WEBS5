@@ -46,6 +46,32 @@ function initialize (rabbitMqConnection) {
     }
   })
 
+  router.put('/targets/:id/rate', async function (req, res, next) {
+    try {
+      const target = await Target.findById(req.params.id)
+      if (!target) {
+        next(createError(404, 'Target not found'))
+        return
+      }
+
+      target.ratings.set(req.user.id, req.body.vote)
+      target.save()
+
+      res.status(202).json('rating added')
+
+      channel.sendToQueue(cqrsQueue.queue, Buffer.from(JSON.stringify({
+        action: 'rating',
+        id: target._id.toString(),
+        data: target.ratings
+      })), {
+        persistent: true
+      })
+
+    } catch (error) {
+      next(createError(500, error.message))
+    }
+  })
+
   router.delete('/targets/:id', async function (req, res, next) {
     try {
       const target = await Target.findById(req.params.id)

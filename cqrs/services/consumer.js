@@ -21,6 +21,11 @@ module.exports = function initialize () {
                       channel.ack(message)
                       console.log('Target created')
                       break
+                    case 'rating':
+                      await Target.findOneAndUpdate(action.id, {ratings: action.data})
+                      channel.ack(message)
+                      console.log('Target ratings updated')
+                      break
                     case 'delete':
                       await Target.findByIdAndDelete(action.id)
                       await Submission.deleteMany({ targetId: action.id })
