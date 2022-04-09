@@ -17,6 +17,7 @@ function initialize (rabbitMqConnection) {
               break
             case 'delete':
               await Target.findByIdAndDelete(content.id)
+              await Submission.deleteMany({ targetId: content.id })
               channel.ack(message)
               console.log(`Target ${content.id} deleted`)
               break

@@ -40,4 +40,16 @@ const schema = new mongoose.Schema({
 
 schema.plugin(mongoosePaginate)
 
+schema.virtual('score').get(function () {
+  let score = 0;
+  for (const rating in Object.values(ratings)) {
+    if (rating) {
+      score++;
+    } else {
+      score--;
+    }
+  }
+  return score;
+})
+
 module.exports = mongoose.model('Target', schema)
