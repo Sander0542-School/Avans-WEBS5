@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const validDataUrl = require('valid-data-url')
 
 const schema = new mongoose.Schema({
   userId: {
@@ -11,7 +12,13 @@ const schema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true
+    required: true,
+    validate: {
+      validator: function (v) {
+        return validDataUrl(v)
+      },
+      message: props => `${props.value} is not a valid base64 image`
+    }
   },
   tags: {
     type: mongoose.Schema.Types.Map,
