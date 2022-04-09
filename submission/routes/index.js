@@ -77,7 +77,9 @@ function initialize (rabbitMqConnection) {
       channel.sendToQueue(cqrsQueue.queue, Buffer.from(JSON.stringify({
         action: 'delete',
         id: submission._id.toString()
-      })))
+      })), {
+        persistent: true
+      })
     } catch (error) {
       next(createError(500, error.message))
     }

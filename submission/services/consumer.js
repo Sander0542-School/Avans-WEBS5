@@ -35,10 +35,12 @@ function initialize (rabbitMqConnection) {
           console.log(`Updated submission ${submission._id} with ${content.tags.count} tags`)
 
           const cqrsQueue = await channel.assertQueue('webs.cqrs.submission', { durable: true })
-          channel.sendQueue(cqrsQueue.queue, Buffer.from(JSON.stringify({
+          channel.sendToQueue(cqrsQueue.queue, Buffer.from(JSON.stringify({
             action: 'create',
             data: submission
-          })))
+          })), {
+            persistent: true
+          })
 
           channel.ack(message)
         } catch (error) {

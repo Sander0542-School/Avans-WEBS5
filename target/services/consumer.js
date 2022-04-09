@@ -20,7 +20,9 @@ function initialize (rabbitMqConnection) {
                     channel.sendToQueue(queue.queue, Buffer.from(JSON.stringify({
                       action: 'create',
                       data: target
-                    })))
+                    })), {
+                      persistent: true
+                    })
                   })
                 channel.assertQueue('webs.submission.target', { durable: true })
                   .then(queue => {
@@ -30,7 +32,9 @@ function initialize (rabbitMqConnection) {
                         _id: target._id.toString(),
                         userId: target.userId.toString()
                       }
-                    })))
+                    })), {
+                      persistent: true
+                    })
                   })
               })
               .catch(error => {
