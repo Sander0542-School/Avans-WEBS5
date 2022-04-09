@@ -22,7 +22,7 @@ module.exports = function initialize () {
                       console.log('Target created')
                       break
                     case 'rating':
-                      await Target.findOneAndUpdate(action.id, {ratings: action.data})
+                      await Target.findOneAndUpdate(action.id, { ratings: action.data })
                       channel.ack(message)
                       console.log('Target ratings updated')
                       break
