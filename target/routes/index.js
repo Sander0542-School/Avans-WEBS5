@@ -55,7 +55,7 @@ function initialize (rabbitMqConnection) {
       }
 
       if (!(req.user.isOwner || req.user.id === target.userId.toString())) {
-        next(createError(403, 'You are not allowed to delete this submission'))
+        next(createError(403, 'You are not allowed to delete this target'))
         return
       }
 
