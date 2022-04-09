@@ -26,7 +26,7 @@ describe('Validate Submission', () => {
     })
 
     const error = submission.validateSync()
-    expect(error.errors['userId']).toBeDefined()
+    expect(error.errors.userId).toBeDefined()
   })
 
   it('should validate error on invalid target', function () {
@@ -36,7 +36,7 @@ describe('Validate Submission', () => {
     })
 
     const error = submission.validateSync()
-    expect(error.errors['targetId']).toBeDefined()
+    expect(error.errors.targetId).toBeDefined()
   })
 
   it('should validate error on invalid base64 image', function () {
@@ -46,16 +46,16 @@ describe('Validate Submission', () => {
     })
 
     const error = submission.validateSync()
-    expect(error.errors['image']).toBeDefined()
+    expect(error.errors.image).toBeDefined()
   })
 
   it('should validate error on emtpy submission', function () {
     const submission = new Submission()
 
     const error = submission.validateSync()
-    expect(error.errors['userId']).toBeDefined()
-    expect(error.errors['targetId']).toBeDefined()
-    expect(error.errors['image']).toBeDefined()
-    expect(error.errors['tags']).toBeUndefined()
+    expect(error.errors.userId).toBeDefined()
+    expect(error.errors.targetId).toBeDefined()
+    expect(error.errors.image).toBeDefined()
+    expect(error.errors.tags).toBeUndefined()
   })
 })
