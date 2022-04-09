@@ -11,8 +11,8 @@ function initialize (rabbitMqConnection) {
 
           switch (content.action) {
             case 'create':
-              const target = await Target.create(content.data)
-              console.log(`Target ${target._id} created`)
+              await Target.create(content.data)
+              console.log('Target created')
               channel.ack(message)
               break
             case 'delete':
