@@ -9,10 +9,18 @@ function initialize (rabbitMqConnection) {
         try {
           const content = JSON.parse(message.content.toString())
 
-          const target = await Target.create(content)
-          console.log(`Target ${target._id} created`)
-
-          channel.ack(message)
+          switch (content.action) {
+            case 'create':
+              const target = await Target.create(content.data)
+              console.log(`Target ${target._id} created`)
+              channel.ack(message)
+              break
+            case 'delete':
+              await Target.findByIdAndDelete(content.id)
+              channel.ack(message)
+              console.log(`Target ${content.id} deleted`)
+              break
+          }
         } catch (error) {
           console.log(error)
         }
