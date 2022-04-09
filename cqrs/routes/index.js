@@ -83,6 +83,10 @@ router.get('/targets/:id/submissions', async function (req, res, next) {
     const sort = req.query.sort ? `field ${req.query.sort}` : undefined
     const query = req.query.user ? { userId: req.query.user } : {}
 
+    if (!(req.user.isOwner || req.user.id === target.userId.toString())) {
+      query.userId = req.user.id
+    }
+
     const submissions = await Submission.paginate({
       targetId: target._id,
       ...query
@@ -112,7 +116,7 @@ router.get('/targets/:id/submissions/:submissionId', async function (req, res, n
 
     const submission = await Submission.findById(req.params.submissionId)
 
-    if (!submission) {
+    if (!submission || !(req.user.isOwner || req.user.id === submission.userId.toString() || req.user.id === target.userId.toString())) {
       next(createError(404, 'Submission not found'))
       return
     }
