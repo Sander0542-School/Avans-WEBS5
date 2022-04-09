@@ -23,16 +23,11 @@ const schema = new mongoose.Schema({
     required: true,
     default: {}
   },
-  ratings: [{
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true
-    },
-    vote: {
-      type: Boolean,
-      required: true
-    }
-  }],
+  ratings: {
+    type: mongoose.Schema.Types.Map,
+    required: true,
+    default: {}
+  },
   place: {
     type: String,
     required: true,
